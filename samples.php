@@ -21,14 +21,27 @@
 		// Add comment field variables
 		$email = $text =  "";
 		
+		$orderBy = array('genre', 'title', 'author');
+		$db1 = '<div id="db1" class="w3-panel example">';
+		$db3 = '<div id="db3" class="w3-panel example" style="display:none"><h3>Books by genre</h3>';
+		$db3but = '<button class="nav-but w3-bar-item w3-button" onclick="openexample('."'".'db3'."'".')">Books by genre<br><sup>db SQL Select Join</sup></button>';
+
+		$order = 'genre, title';
+		if (isset($_GET['orderBy']) && in_array($_GET['orderBy'], $orderBy)) {
+			$order = $_GET['orderBy'];
+			$db1 = '<div id="db1" class="w3-panel example" style="display:none">';
+			$db3 = '<div id="db3" class="w3-panel example"><h3>Books by '.$_GET['orderBy'].'</h3>';
+			$db3but = '<button class="nav-but w3-bar-item w3-button" onclick="openexample('."'".'db3'."'".')">Books by '.$_GET['orderBy'].'<br><sup>db SQL Select Join</sup></button>';
+		}
+
 		// Database queries
 		$qry_Comments = "Select * from examples.comments Order by entry_dt desc";
-		$qry_GenBkAuth = "SELECT books.title, genre.genre, concat(authors.surname, ', ', authors.firstnames) as author "
+		$qry_GenBkAuth = "SELECT books.title as title, genre.genre as genre, concat(authors.surname, ', ', authors.firstnames) as author "
 			. "FROM examples.book_genre "
 			. "Left Outer Join examples.books on books.id = book_genre.book_id "
 			. "Left Outer Join examples.genre on genre.id = book_genre.genre_id "
 			. "Left Outer Join examples.authors on authors.id = books.author_id "
-			. "Order by genre.genre, books.title";
+			. "Order by " . $order;
 		$qry_LangBkAuth = "SELECT books.title, languages.language, concat(authors.surname, ', ', authors.firstnames) as author "
 			. "FROM examples.book_lang "
 			. "Left Outer Join examples.books on books.id = book_lang.book_id "
@@ -47,7 +60,9 @@
 						<a href="/index.html" class="nav-but w3-bar-item w3-button">Home</a>
 						<button class="nav-but w3-bar-item w3-button" onclick="openexample('db1')">Add comments<br><sup>db Record creation</sup></button>
 						<button class="nav-but w3-bar-item w3-button" onclick="openexample('db2')">View comments<br><sup>db SQL Select</sup></button>
-						<button class="nav-but w3-bar-item w3-button" onclick="openexample('db3')">Books by genre<br><sup>db SQL Select Join</sup></button>
+						<?php
+							echo $db3but;
+						?>
 						<button class="nav-but w3-bar-item w3-button" onclick="openexample('db4')">Bks by language<br><sup>No data example</sup></button>
 					</div>
 				 </div>
@@ -59,7 +74,9 @@
 			</div>
 			
 			<div id='common' class="w3-main" style="padding-left: 10px; margin-left:175px">
-				<div id="db1" class="w3-panel example">
+				<?php
+					echo $db1;
+				?>
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 						<h3>Leave a comment</h3>
 						<label>Email</label><input name="your_email" class="w3-input w3-hover-light-grey" type="email" size=60>
@@ -86,17 +103,16 @@
 					?>
 					</table>
 				</div>
-				<div id="db3" class="w3-panel example" style="display:none">
-					<h3>Books by genre</h3>
 					<!-- <p>Column headings can be used to sort the entries</p> -->
 					<?php
+					echo $db3;
 					$bookList = getData($qry_GenBkAuth);
 					if (!$bookList) {
 						echo '<p>No genre relationships to display</p>';
 					}
 					else {
 						echo '<table style="width:85%">';
-						echo '<tr><th class="left-algn">Genre</th><th class="left-algn">Book title</th><th class="left-algn">Author</th></tr>';
+						echo '<tr><th class="left-algn"><a href="?orderBy=genre">Genre</a></th><th class="left-algn"><a href="?orderBy=title">Book title</a></th><th class="left-algn"><a href="?orderBy=author">Author</a></th></tr>';
 
 						foreach ($bookList as $row) {
 							echo '<tr><td>'.$row['genre'].'</td><td>'.$row['title'].'</td><td>'.$row['author'].'</td></tr>';					
