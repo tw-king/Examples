@@ -41,7 +41,7 @@
 			<div class="w3-cell-row w3-padding-24">
 				<div class="w3-cell w3-cell-middle s3 m3 l3">
 					<div class="w3-hide-large">
-						<button class="w3-button w3-purple w3-large" onclick="w3_open_common()">&#9776;</button>
+						<button class="w3-button w3-blue w3-large" onclick="w3_open_common()">&#9776;</button>
 					</div>
 					<div class="w3-sidebar w3-top w3-bar-block w3-collapse w3-flat-silver w3-card" style="width:165px;" id="common-nav">
 						<a href="/index.html" class="nav-but w3-bar-item w3-button">Home</a>
@@ -126,7 +126,7 @@
 	</body>
 	<footer id="pg_footer">
 		<div class="w3-col s12 m12 l12 w3-right-align w3-margin-bottom">
-			<p class="w3-margin-right">Last updated: 18-03-2018</p>
+			<p class="w3-margin-right">Last updated: 02-05-2018</p>
 		</div>
 	</footer>
 	<?php
