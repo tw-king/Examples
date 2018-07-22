@@ -1,0 +1,15 @@
+#Sublime Find / Replace regex example
+
+
+Tony,49,13 Clyde
+Daphne,92,100 Cecil Rd
+
+
+Find:  ([a-zA-Z]+)([,])([0-9]+)([,])([0-9a-zA-Z ]+)
+Note:
+	() = capture,
+	[] = these character ranges, symbols, etc...
+	+ = more than one character, i.e. unitl it does not match the pattern
+
+Replace: \5\4\3\2\1
+	\ = capture group id/number
